@@ -11,6 +11,7 @@ require("naughty")
 require("obvious.volume_alsa")
 require("obvious.basic_mpd")
 require("obvious.battery")
+require("obvious.temp_info")
 
 -- Vicious widgets
 require("vicious")
@@ -189,6 +190,8 @@ for s = 1, screen.count() do
     text_clock,
     separator,
     obvious.battery(),
+    separator,
+    obvious.temp_info(),
     separator,
     s == 1 and systray or nil,
     separator,
