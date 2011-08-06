@@ -72,18 +72,6 @@ end
 -- Textclock widget
 text_clock = awful.widget.textclock({ align = "right" })
 
--- Gmail widget
-gmail = widget { type = "textbox" }
-vicious.register(gmail, vicious.widgets.gmail, function(w, args)
-  count = args['{count}']
-
-  if count > 0 then
-    return colorize('#ff0000', '[Mail: '..count..']')
-  else
-    return ''
-  end
-end, 60)
-
 -- MPD widget
 mpd = widget { type = "textbox" }
 vicious.register(mpd, vicious.widgets.mpd, function(w, args)
@@ -197,7 +185,6 @@ for s = 1, screen.count() do
     separator,
     mpd,
     separator,
-    gmail,
     obvious.volume_alsa(0, "Master"),
     tasklist[s],
 
