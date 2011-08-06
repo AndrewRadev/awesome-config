@@ -227,8 +227,7 @@ global_keys = awful.util.table.join(
 
   -- Standard program
   awful.key({ modkey, },           "Return", function () spawn(terminal) end),
-  awful.key({ modkey, },           "q",      awesome.restart),
-  awful.key({ modkey, "Shift"   }, "q",      awesome.quit),
+  awful.key({ modkey, "Shift"   }, "q",      awesome.restart),
 
   awful.key({ modkey, },           "l",     function () awful.tag.incmwfact( 0.05)    end),
   awful.key({ modkey, },           "h",     function () awful.tag.incmwfact(-0.05)    end),
@@ -247,13 +246,13 @@ global_keys = awful.util.table.join(
   awful.key({ modkey }, "F9", function () spawn("brightness up")                    end),
 
   -- music management
-  awful.key({ modkey }, "p", function () spawn("mpc toggle") end),
-  awful.key({ modkey }, ".", function () spawn("mpc next")   end),
-  awful.key({ modkey }, ",", function () spawn("mpc prev")   end),
+  awful.key({ modkey, "Shift" }, "p", function () spawn("mpc toggle") end),
+  awful.key({ modkey, "Shift" }, ".", function () spawn("mpc next")   end),
+  awful.key({ modkey, "Shift" }, ",", function () spawn("mpc prev")   end),
 
   -- prompt
-  awful.key({ modkey },          "r", function () promt_box[mouse.screen]:run() end),
-  awful.key({ modkey, "Shift" }, "p", function () spawn("gmrun")                end),
+  awful.key({ modkey }, "r", function () promt_box[mouse.screen]:run() end),
+  awful.key({ modkey }, "p", function () spawn("gmrun")                end),
 
   -- applications
   awful.key({ modkey, "Shift" }, "f", function () summon("firefox-beta-bin", { class = "Firefox" }) end),
@@ -276,7 +275,9 @@ global_keys = awful.util.table.join(
 
 client_keys = awful.util.table.join(
   awful.key({ modkey, },           "f",      function (c) c.fullscreen = not c.fullscreen  end),
-  awful.key({ modkey, "Shift" },   "c",      function (c) c:kill()                         end),
+
+  awful.key({ modkey, },           "q",      function (c) c:kill()                         end),
+
   awful.key({ modkey, },           "t",      awful.client.floating.toggle                     ),
   awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
   awful.key({ modkey, },           "o",      awful.client.movetoscreen                        ),
