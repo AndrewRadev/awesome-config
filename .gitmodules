@@ -1,0 +1,6 @@
+[submodule "obvious"]
+	path = obvious
+	url = git://git.mercenariesguild.net/obvious.git
+[submodule "vicious"]
+	path = vicious
+	url = http://git.sysphere.org/vicious
