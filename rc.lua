@@ -98,17 +98,16 @@ separator.text = '<span color="#ee1111"> :: </span>'
 systray = widget({ type = "systray" })
 
 -- Create a wibox for each screen and add it
-wibox = {}
+wibox      = {}
 prompt_box = {}
 layout_box = {}
-taglist = {}
+taglist    = {}
+
 taglist.buttons = awful.util.table.join(
   awful.button({ },        1, awful.tag.viewonly),
   awful.button({ modkey }, 1, awful.client.movetotag),
   awful.button({ },        3, awful.tag.viewtoggle),
-  awful.button({ modkey }, 3, awful.client.toggletag),
-  awful.button({ },        4, awful.tag.viewnext),
-  awful.button({ },        5, awful.tag.viewprev)
+  awful.button({ modkey }, 3, awful.client.toggletag)
 )
 
 tasklist = {}
@@ -194,9 +193,7 @@ end
 
 -- Mouse bindings
 root.buttons(awful.util.table.join(
-  awful.button({ }, 3, function () main_menu:toggle() end),
-  awful.button({ }, 4, awful.tag.viewnext),
-  awful.button({ }, 5, awful.tag.viewprev)
+  awful.button({ }, 3, function () main_menu:toggle() end)
 ))
 
 -- Key bindings
@@ -339,28 +336,28 @@ root.keys(global_keys)
 awful.rules.rules = {
   -- All clients will match this rule.
   {
-    rule = { },
+    rule       = { },
     properties = {
       border_width = beautiful.border_width,
       border_color = beautiful.border_normal,
-      focus = true,
-      keys = client_keys,
-      buttons = client_buttons
+      focus        = true,
+      keys         = client_keys,
+      buttons      = client_buttons
     }
   },
 
   {
-    rule =       { class = "MPlayer" },
+    rule       = { class = "MPlayer" },
     properties = { floating = true },
   },
 
   {
-    rule =       { class = "gimp" },
+    rule       = { class = "gimp" },
     properties = { floating = true }
   },
 
   {
-    rule =       { class = "Skype" },
+    rule       = { class = "Skype" },
     properties = { tag = tags[1][9] }
   },
 }
@@ -372,7 +369,7 @@ client.add_signal("manage", function (c, startup)
     -- i.e. put it at the end of others instead of setting it master.
     -- awful.client.setslave(c)
 
-    -- Put windows in a smart way, only if they does not set an initial position.
+    -- Put windows in a smart way, only if they don't set an initial position.
     if not c.size_hints.user_position and not c.size_hints.program_position then
       awful.placement.no_overlap(c)
       awful.placement.no_offscreen(c)
