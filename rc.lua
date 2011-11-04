@@ -16,19 +16,25 @@ require("obvious.temp_info")
 -- Vicious widgets
 require("vicious")
 
-require ("lib.summon")
+require("lib.util")
+require("lib.summon")
+require("lib.core_ext")
 local summon = lib.summon.summon
+local util   = lib.util
 
 -- Variable definitions
-local spawn      = awful.util.spawn
+local spawn = awful.util.spawn
 
-local terminal   = "urxvt"
-local modkey     = "Mod1"
+local terminal = "urxvt"
+local modkey   = "Mod1"
 
-local home       = os.getenv("HOME")
-local editor     = os.getenv("EDITOR") or "vim"
+local home   = os.getenv("HOME")
+local editor = os.getenv("EDITOR") or "vim"
 
 local editor_cmd = terminal .. " -e " .. editor
+
+local global_keys = {}
+local local_keys  = {}
 
 -- Initialize theme
 beautiful.init(home .. "/.config/awesome/theme.lua")
@@ -65,10 +71,6 @@ launcher = awful.widget.launcher({
   menu  = main_menu
 })
 
-function colorize(color, string)
-  return '<span color="'..color..'">'..string..'</span>'
-end
-
 -- Textclock widget
 text_clock = awful.widget.textclock({ align = "right" })
 
@@ -78,12 +80,12 @@ vicious.register(mpd, vicious.widgets.mpd, function(w, args)
   state = args['{state}']
 
   if state == "Stop" then
-    return colorize('#009000', '--')
+    return util.colorize('#009000', '--')
   else
     if state == "Pause" then
-      state_string = colorize('#009000', '||')
+      state_string = util.colorize('#009000', '||')
     else
-      state_string = colorize('#009000', '>')
+      state_string = util.colorize('#009000', '>')
     end
 
     return "Playing: "..args['{Title}'].." "..state_string
@@ -197,19 +199,56 @@ root.buttons(awful.util.table.join(
 ))
 
 -- Key bindings
-global_keys = awful.util.table.join(
-  awful.key({ modkey, }, "Left",   awful.tag.viewprev       ),
-  awful.key({ modkey, }, "Right",  awful.tag.viewnext       ),
-  awful.key({ modkey, }, "Escape", awful.tag.history.restore),
 
-  awful.key({ modkey, }, "j", function ()
-    awful.client.focus.byidx( 1)
-    if client.focus then client.focus:raise() end
-  end),
-  awful.key({ modkey, }, "k", function ()
-    awful.client.focus.byidx(-1)
-    if client.focus then client.focus:raise() end
-  end),
+function translate_modifiers(modifiers)
+  local result = {}
+
+  for i, mod in pairs(modifiers) do
+    if mod == 'M' then
+      table.insert(result, modkey)
+    elseif mod == 'S' then
+      table.insert(result, "Shift")
+    elseif mod == 'C' then
+      table.insert(result, "Control")
+    end
+  end
+
+  return result
+end
+
+function map_global(key_description, action)
+  local key_definition = key_description:split('-')
+  local key            = table.remove(key_definition)
+  local modifiers      = translate_modifiers(key_definition)
+
+  key_definition = awful.key(modifiers, key, action)
+  global_keys    = awful.util.table.join(global_keys, key_definition)
+end
+
+map_global("M-Left", awful.tag.viewprev)
+map_global("M-Right", awful.tag.viewnext)
+map_global("M-Escape", awful.tag.history.restore)
+
+map_global("M-j", function ()
+  awful.client.focus.byidx(1)
+  if client.focus then
+    client.focus:raise()
+  end
+end)
+
+map_global("M-k", function ()
+  awful.client.focus.byidx(-1)
+  if client.focus then
+    client.focus:raise()
+  end
+end)
+
+map_global("M-S-p", util.spawner("mpc toggle"))
+map_global("M-S-.", util.spawner("mpc next"))
+map_global("M-S-,", util.spawner("mpc prev"))
+
+global_keys = awful.util.table.join(
+  global_keys,
 
   -- Layout manipulation
   awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -241,11 +280,6 @@ global_keys = awful.util.table.join(
   awful.key({ modkey }, "F5", function () obvious.volume_alsa.raise(0, "Master", 5) end),
   awful.key({ modkey }, "F8", function () spawn("brightness down")                  end),
   awful.key({ modkey }, "F9", function () spawn("brightness up")                    end),
-
-  -- music management
-  awful.key({ modkey, "Shift" }, "p", function () spawn("mpc toggle") end),
-  awful.key({ modkey, "Shift" }, ".", function () spawn("mpc next")   end),
-  awful.key({ modkey, "Shift" }, ",", function () spawn("mpc prev")   end),
 
   -- prompt
   awful.key({ modkey }, "r", function () promt_box[mouse.screen]:run() end),
