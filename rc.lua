@@ -282,8 +282,8 @@ global_keys = awful.util.table.join(
   awful.key({ modkey }, "F9", function () spawn("brightness up")                    end),
 
   -- prompt
-  awful.key({ modkey }, "r", function () promt_box[mouse.screen]:run() end),
-  awful.key({ modkey }, "p", function () spawn("gmrun")                end),
+  awful.key({ modkey }, "r", function () prompt_box[mouse.screen]:run() end),
+  awful.key({ modkey }, "p", function () spawn("gmrun")                 end),
 
   -- applications
   awful.key({ modkey, "Shift" }, "f", function () summon("firefox", { class = "Firefox" }) end),
