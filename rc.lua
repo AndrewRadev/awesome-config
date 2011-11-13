@@ -234,38 +234,44 @@ map_global("M-Escape", awful.tag.history.restore)
 
 map_global("M-j", function ()
   awful.client.focus.byidx(1)
+
+  if client.focus then
+    client.focus:raise()
+  end
+end)
+map_global("M-k", function ()
+  awful.client.focus.byidx(-1)
+
+  if client.focus then
+    client.focus:raise()
+  end
+end)
+map_global("M-Tab", function ()
+  awful.client.focus.history.previous()
+
   if client.focus then
     client.focus:raise()
   end
 end)
 
-map_global("M-k", function ()
-  awful.client.focus.byidx(-1)
-  if client.focus then
-    client.focus:raise()
-  end
-end)
+map_global("M-S-j", function () awful.client.swap.byidx(1) end)
+map_global("M-S-k", function () awful.client.swap.byidx(-1) end)
+
+map_global("M-u", awful.client.urgent.jumpto)
 
 map_global("M-S-p", util.spawner("mpc toggle"))
 map_global("M-S-.", util.spawner("mpc next"))
 map_global("M-S-,", util.spawner("mpc prev"))
 
+-- Applications
+map_global("M-Return", util.spawner(terminal))
+map_global("M-S-f", function () summon("firefox", { class = "Firefox" }) end)
+map_global("M-S-t", util.spawner("thunar"))
+map_global("M-S-m", util.spawner("firefox gmail.com"))
+
 global_keys = awful.util.table.join(
   global_keys,
 
-  -- Layout manipulation
-  awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
-  awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
-  awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
-  awful.key({ modkey,           }, "Tab", function ()
-    awful.client.focus.history.previous()
-    if client.focus then
-      client.focus:raise()
-    end
-  end),
-
-  -- Standard program
-  awful.key({ modkey, },           "Return", function () spawn(terminal) end),
   awful.key({ modkey, "Shift"   }, "q",      awesome.restart),
 
   awful.key({ modkey, },           "l",     function () awful.tag.incmwfact( 0.05)    end),
@@ -281,17 +287,14 @@ global_keys = awful.util.table.join(
   awful.key({ modkey }, "F3", function () obvious.volume_alsa.mute(0, "Master")     end),
   awful.key({ modkey }, "F4", function () obvious.volume_alsa.lower(0, "Master", 5) end),
   awful.key({ modkey }, "F5", function () obvious.volume_alsa.raise(0, "Master", 5) end),
+
+  -- TODO: Fix brightness controls (use dbus?)
   awful.key({ modkey }, "F8", function () spawn("brightness down")                  end),
   awful.key({ modkey }, "F9", function () spawn("brightness up")                    end),
 
   -- prompt
   awful.key({ modkey }, "r", function () prompt_box[mouse.screen]:run() end),
   awful.key({ modkey }, "p", function () spawn("gmrun")                 end),
-
-  -- applications
-  awful.key({ modkey, "Shift" }, "f", function () summon("firefox", { class = "Firefox" }) end),
-  awful.key({ modkey, "Shift" }, "m", function () spawn("firefox gmail.com") end),
-  awful.key({ modkey, "Shift" }, "t", function () spawn("thunar") end),
 
   -- pixel-grabbing
   awful.key({ modkey }, "F11", function () spawn("grabc 2>&1 | xclip -i") end),
