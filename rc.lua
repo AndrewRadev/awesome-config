@@ -386,15 +386,8 @@ awful.rules.rules = {
     }
   },
 
-  {
-    rule       = { class = "MPlayer" },
-    properties = { floating = true },
-  },
-
-  {
-    rule       = { class = "gimp" },
-    properties = { floating = true }
-  },
+  util.floating("MPlayer"),
+  util.floating("gimp"),
 
   {
     rule       = { class = "Skype" },
