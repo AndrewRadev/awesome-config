@@ -393,6 +393,10 @@ awful.rules.rules = {
     rule       = { class = "Skype" },
     properties = { tag = tags[1][9] }
   },
+  {
+    rule       = { class = "Pidgin" },
+    properties = { tag = tags[1][8] }
+  },
 }
 
 -- Signal function to execute when a new client appears.
