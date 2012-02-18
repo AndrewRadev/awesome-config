@@ -1,39 +1,30 @@
--- Standard awesome library
 require("awful")
 require("awful.autofocus")
 require("awful.rules")
 require("awful.remote")
--- Theme handling library
 require("beautiful")
--- Notification library
 require("naughty")
 
--- Obvious widgets
 require("obvious.volume_alsa")
 require("obvious.basic_mpd")
 require("obvious.battery")
 require("obvious.temp_info")
 
--- Vicious widgets
 require("vicious")
 
 require("lib.util")
 require("lib.summon")
 require("lib.core_ext")
+
+local spawn  = awful.util.spawn
 local summon = lib.summon.summon
 local util   = lib.util
 
--- Variable definitions
-local spawn = awful.util.spawn
-
-local terminal = "urxvt"
-local modkey   = "Mod1"
-
-local home   = os.getenv("HOME")
-local editor = os.getenv("EDITOR") or "vim"
-
-local editor_cmd = terminal .. " -e " .. editor
-
+local terminal    = "urxvt"
+local modkey      = "Mod1"
+local home        = os.getenv("HOME")
+local editor      = os.getenv("EDITOR") or "vim"
+local editor_cmd  = terminal .. " -e " .. editor
 local global_keys = {}
 local local_keys  = {}
 
@@ -51,26 +42,6 @@ tags = {}
 for s = 1, screen.count() do
   tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
 end
-
--- Menus
-awesome_menu = {
-  { "manual",      terminal .. " -e man awesome" },
-  { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
-  { "restart",     awesome.restart },
-  { "quit",        awesome.quit }
-}
-
-main_menu = awful.menu({
-  items = {
-    { "awesome",       awesome_menu, beautiful.awesome_icon },
-    { "open terminal", terminal }
-  }
-})
-
-launcher = awful.widget.launcher({
-  image = image(beautiful.awesome_icon),
-  menu  = main_menu
-})
 
 -- Textclock widget
 text_clock = awful.widget.textclock({ align = "right" })
@@ -170,7 +141,6 @@ for s = 1, screen.count() do
   -- Add widgets to the wibox - order matters
   wibox[s].widgets = {
     {
-      launcher,
       taglist[s],
       prompt_box[s],
 
@@ -193,11 +163,6 @@ for s = 1, screen.count() do
     layout = awful.widget.layout.horizontal.rightleft
   }
 end
-
--- Mouse bindings
-root.buttons(awful.util.table.join(
-  awful.button({ }, 3, function () main_menu:toggle() end)
-))
 
 -- Key bindings
 
@@ -228,8 +193,8 @@ function map_global(key_description, action)
   root.keys(global_keys)
 end
 
-map_global("M-Left", awful.tag.viewprev)
-map_global("M-Right", awful.tag.viewnext)
+map_global("M-Left",   awful.tag.viewprev)
+map_global("M-Right",  awful.tag.viewnext)
 map_global("M-Escape", awful.tag.history.restore)
 
 map_global("M-j", function ()
@@ -312,9 +277,7 @@ global_keys = awful.util.table.join(
 
 client_keys = awful.util.table.join(
   awful.key({ modkey, },           "f",      function (c) c.fullscreen = not c.fullscreen  end),
-
   awful.key({ modkey, },           "q",      function (c) c:kill()                         end),
-
   awful.key({ modkey, },           "t",      awful.client.floating.toggle                     ),
   awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
   awful.key({ modkey, },           "o",      awful.client.movetoscreen                        ),
@@ -326,7 +289,7 @@ client_keys = awful.util.table.join(
   end)
 )
 
--- Compute the maximum number of digit we need, limited to 9
+-- Compute the maximum number of digits we need, limited to 9
 keynumber = 0
 for s = 1, screen.count() do
   keynumber = math.min(9, math.max(#tags[s], keynumber));
