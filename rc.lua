@@ -341,11 +341,12 @@ awful.rules.rules = {
   {
     rule       = { },
     properties = {
-      border_width = beautiful.border_width,
-      border_color = beautiful.border_normal,
-      focus        = true,
-      keys         = client_keys,
-      buttons      = client_buttons
+      border_width     = beautiful.border_width,
+      border_color     = beautiful.border_normal,
+      size_hints_honor = false,
+      focus            = true,
+      keys             = client_keys,
+      buttons          = client_buttons
     }
   },
 
