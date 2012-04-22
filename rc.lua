@@ -249,9 +249,9 @@ global_keys = awful.util.table.join(
   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
   -- sound & brightness
-  awful.key({ modkey }, "F3", function () spawn("mute_toggle") end),
-  awful.key({ modkey }, "F4", function () spawn("vol_down")    end),
-  awful.key({ modkey }, "F5", function () spawn("vol_up")      end),
+  awful.key({ modkey }, "F3",   function () spawn("mute_toggle") end),
+  awful.key({ modkey }, "Down", function () spawn("vol_down")    end),
+  awful.key({ modkey }, "Up",   function () spawn("vol_up")      end),
 
   -- TODO: Fix brightness controls (use dbus?)
   awful.key({ modkey }, "F8", function () spawn("brightness down")                  end),
