@@ -231,6 +231,7 @@ map_global("M-S-,", util.spawner("mpc prev"))
 -- Applications
 map_global("M-Return", util.spawner(terminal))
 map_global("M-S-f", function () summon("firefox", { class = "Firefox" }) end)
+map_global("M-S-w", util.spawner("bin/websearch-prompt 'http://en.wikipedia.org/wiki/{0}'"))
 map_global("M-S-t", util.spawner("thunar"))
 map_global("M-S-m", util.spawner("firefox gmail.com"))
 
