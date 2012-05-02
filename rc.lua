@@ -228,10 +228,23 @@ map_global("M-S-p", util.spawner("mpc toggle"))
 map_global("M-S-.", util.spawner("mpc next"))
 map_global("M-S-,", util.spawner("mpc prev"))
 
+-- Screenkey
+screenkey_started = 0
+map_global("M-s", function ()
+  if screenkey_started == 0 then
+    screenkey_started = 1
+    spawn("screenkey")
+  else
+    screenkey_started = 0
+    spawn("killall screenkey")
+  end
+end)
+
 -- Applications
 map_global("M-Return", util.spawner(terminal))
 map_global("M-S-f", function () summon("firefox", { class = "Firefox" }) end)
 map_global("M-S-w", util.spawner("bin/websearch-prompt 'http://en.wikipedia.org/wiki/{0}'"))
+map_global("M-S-y", util.spawner("bin/websearch-prompt 'http://youtube.com/results?search_query={0}'"))
 map_global("M-S-t", util.spawner("thunar"))
 map_global("M-S-m", util.spawner("firefox gmail.com"))
 
@@ -250,9 +263,9 @@ global_keys = awful.util.table.join(
   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
   -- sound & brightness
-  awful.key({ modkey }, "F3",   function () spawn("mute_toggle") end),
-  awful.key({ modkey }, "Down", function () spawn("vol_down")    end),
-  awful.key({ modkey }, "Up",   function () spawn("vol_up")      end),
+  awful.key({ modkey }, "F3",   function () obvious.volume_alsa.mute(0, "Master")     end),
+  awful.key({ modkey }, "Down", function () obvious.volume_alsa.lower(0, "Master", 5) end),
+  awful.key({ modkey }, "Up",   function () obvious.volume_alsa.raise(0, "Master", 5) end),
 
   -- TODO: Fix brightness controls (use dbus?)
   awful.key({ modkey }, "F8", function () spawn("brightness down")                  end),
@@ -353,6 +366,7 @@ awful.rules.rules = {
 
   util.floating("MPlayer"),
   util.floating("gimp"),
+  util.floating("Screenkey"),
 
   {
     rule       = { class = "Skype" },
