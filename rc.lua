@@ -230,7 +230,7 @@ map_global("M-S-,", util.spawner("mpc prev"))
 
 -- Screenkey
 screenkey_started = 0
-map_global("M-s", function ()
+screenkey_callback = function ()
   if screenkey_started == 0 then
     screenkey_started = 1
     spawn("screenkey")
@@ -238,7 +238,9 @@ map_global("M-s", function ()
     screenkey_started = 0
     spawn("killall screenkey")
   end
-end)
+end
+map_global("M-s",   screenkey_callback)
+map_global("M-S-s", screenkey_callback)
 
 -- Applications
 map_global("M-Return", util.spawner(terminal))
@@ -364,9 +366,9 @@ awful.rules.rules = {
     }
   },
 
-  util.floating("MPlayer"),
-  util.floating("gimp"),
-  util.floating("Screenkey"),
+  util.floating({ class = "MPlayer" }),
+  util.floating({ class = "gimp" }),
+  util.floating({ name  = "screenkey" }),
 
   {
     rule       = { class = "Skype" },

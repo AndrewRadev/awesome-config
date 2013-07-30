@@ -12,9 +12,9 @@ function colorize(color, string)
   return '<span color="'..color..'">'..string..'</span>'
 end
 
-function floating(window_class)
+function floating(rule)
   return {
-    rule       = { class = window_class },
+    rule       = rule,
     properties = { floating = true },
   }
 end
