@@ -265,13 +265,13 @@ global_keys = awful.util.table.join(
   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
   -- sound & brightness
-  awful.key({ modkey }, "F3",   function () obvious.volume_alsa.mute(0, "Master")     end),
+  awful.key({ modkey }, "F2",   function () obvious.volume_alsa.mute(0, "Master")     end),
   awful.key({ modkey }, "Down", function () obvious.volume_alsa.lower(0, "Master", 5) end),
   awful.key({ modkey }, "Up",   function () obvious.volume_alsa.raise(0, "Master", 5) end),
 
   -- TODO: Fix brightness controls (use dbus?)
-  awful.key({ modkey }, "F8", function () spawn("brightness down")                  end),
-  awful.key({ modkey }, "F9", function () spawn("brightness up")                    end),
+  awful.key({ modkey }, "F5", function () spawn("/home/andrew/bin/brightness down") end ),
+  awful.key({ modkey }, "F6", function () spawn("/home/andrew/bin/brightness up")   end ),
 
   -- prompt
   awful.key({ modkey }, "r", function () prompt_box[mouse.screen]:run() end),
