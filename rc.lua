@@ -4,6 +4,7 @@ require("awful.rules")
 require("awful.remote")
 require("beautiful")
 require("naughty")
+require("dbus")
 
 require("obvious.volume_alsa")
 require("obvious.basic_mpd")
@@ -62,6 +63,21 @@ vicious.register(mpd, vicious.widgets.mpd, function(w, args)
 
     return "Playing: "..args['{Title}'].." "..state_string
   end
+end)
+
+-- Keyboard layout widget
+keyboard_layout = widget { type = "textbox", name = "keyboard_layout" }
+keyboard_layout.border_width = 1
+keyboard_layout.border_color = beautiful.fg_normal
+keyboard_layout.text = " EN "
+
+dbus.request_name("session", "ru.gentoo.kbdd")
+dbus.add_match("session", "interface='ru.gentoo.kbdd',member='layoutChanged'")
+dbus.add_signal("ru.gentoo.kbdd", function(...)
+  local data = {...}
+  local layout = data[2]
+  lts = { [0] = " EN ", [1] = " BG " }
+  keyboard_layout.text = lts[layout]
 end)
 
 -- Separator
@@ -155,8 +171,10 @@ for s = 1, screen.count() do
     separator,
     s == 1 and systray or nil,
     separator,
-    mpd,
+    keyboard_layout,
     separator,
+    --mpd,
+    --separator,
     obvious.volume_alsa(0, "Master"),
     tasklist[s],
 
