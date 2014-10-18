@@ -1,13 +1,19 @@
-require("awful")
+-- Standard awesome library
+local gears = require("gears")
+local awful = require("awful")
+awful.rules = require("awful.rules")
+awful.widget = require("awful.widget")
 require("awful.autofocus")
-require("awful.rules")
-require("awful.remote")
-require("beautiful")
-require("naughty")
-require("dbus")
+-- Widget and layout library
+local wibox = require("wibox")
+wibox.widget = require("wibox.widget")
+-- Theme handling library
+local beautiful = require("beautiful")
+-- Notification library
+local naughty = require("naughty")
+local menubar = require("menubar")
 
 require("obvious.volume_alsa")
-require("obvious.basic_mpd")
 require("obvious.battery")
 require("obvious.temp_info")
 
@@ -45,10 +51,10 @@ for s = 1, screen.count() do
 end
 
 -- Textclock widget
-text_clock = awful.widget.textclock({ align = "right" })
+text_clock = awful.widget.textclock()
 
 -- MPD widget
-mpd = widget { type = "textbox" }
+mpd = wibox.widget.textbox()
 vicious.register(mpd, vicious.widgets.mpd, function(w, args)
   state = args['{state}']
 
@@ -66,30 +72,28 @@ vicious.register(mpd, vicious.widgets.mpd, function(w, args)
 end)
 
 -- Keyboard layout widget
-keyboard_layout = widget { type = "textbox", name = "keyboard_layout" }
+keyboard_layout = wibox.widget.textbox(" EN ")
+keyboard_layout.name = "keyboard_layout"
 keyboard_layout.border_width = 1
 keyboard_layout.border_color = beautiful.fg_normal
-keyboard_layout.text = " EN "
 
 dbus.request_name("session", "ru.gentoo.kbdd")
 dbus.add_match("session", "interface='ru.gentoo.kbdd',member='layoutChanged'")
-dbus.add_signal("ru.gentoo.kbdd", function(...)
+dbus.connect_signal("ru.gentoo.kbdd", function(...)
   local data = {...}
   local layout = data[2]
   lts = { [0] = " EN ", [1] = " BG " }
-  keyboard_layout.text = lts[layout]
+  keyboard_layout.set_text(lts[layout])
 end)
 
 -- Separator
-separator = widget { type = "textbox" }
-separator.text = '<span color="#ee1111"> :: </span>'
+separator = wibox.widget.textbox('<span color="#ee1111"> :: </span>')
 
 -- Create a systray
-systray = widget({ type = "systray" })
+systray = wibox.widget.systray()
 
 -- Create a wibox for each screen and add it
-wibox      = {}
-prompt_box = {}
+widget_box = {}
 layout_box = {}
 taglist    = {}
 
@@ -131,9 +135,6 @@ tasklist.buttons = awful.util.table.join(
 )
 
 for s = 1, screen.count() do
-  -- Create a promptbox for each screen
-  prompt_box[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
-
   -- Image box with the layout we're using
   layout_box[s] = awful.widget.layoutbox(s)
   layout_box[s]:buttons(awful.util.table.join(
@@ -144,42 +145,42 @@ for s = 1, screen.count() do
   ))
 
   -- Create a taglist widget
-  taglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, taglist.buttons)
+  taglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist.buttons)
 
   -- Create a tasklist widget
   tasklist[s] = awful.widget.tasklist(function(c)
     return awful.widget.tasklist.label.currenttags(c, s)
   end, tasklist.buttons)
 
-  -- Create the wibox
-  wibox[s] = awful.wibox({ position = "top", screen = s })
+  -- Create the widget box
+  widget_box[s] = awful.wibox({ position = "top", screen = s })
 
-  -- Add widgets to the wibox - order matters
-  wibox[s].widgets = {
-    {
-      taglist[s],
-      prompt_box[s],
+  -- Widgets that are aligned to the left
+  local left_layout = wibox.layout.fixed.horizontal()
+  left_layout:add(taglist[s])
+  left_layout:add(obvious.volume_alsa(0, "Master"))
+  --left_layout:add(tasklist[s]),
 
-      layout = awful.widget.layout.horizontal.leftright
-    },
-    layout_box[s],
-    text_clock,
-    separator,
-    obvious.battery(),
-    separator,
-    obvious.temp_info(),
-    separator,
-    s == 1 and systray or nil,
-    separator,
-    keyboard_layout,
-    separator,
-    --mpd,
-    --separator,
-    obvious.volume_alsa(0, "Master"),
-    tasklist[s],
+  -- Widgets that are aligned to the right
+  local right_layout = wibox.layout.fixed.horizontal()
+  if s == 1 then right_layout:add(systray) end
+  right_layout:add(separator)
+  right_layout:add(keyboard_layout)
+  right_layout:add(separator)
+  right_layout:add(obvious.battery())
+  right_layout:add(separator)
+  right_layout:add(obvious.temp_info())
+  right_layout:add(separator)
+  right_layout:add(text_clock)
+  right_layout:add(layout_box[s])
 
-    layout = awful.widget.layout.horizontal.rightleft
-  }
+  -- Now bring it all together (with the tasklist in the middle)
+  local layout = wibox.layout.align.horizontal()
+  layout:set_left(left_layout)
+  layout:set_middle(tasklist[s])
+  layout:set_right(right_layout)
+
+  widget_box[s]:set_widget(layout)
 end
 
 -- Key bindings
@@ -292,21 +293,13 @@ global_keys = awful.util.table.join(
   awful.key({ modkey }, "F6", function () spawn("/home/andrew/bin/brightness up")   end ),
 
   -- prompt
-  awful.key({ modkey }, "r", function () prompt_box[mouse.screen]:run() end),
-  awful.key({ modkey }, "p", function () spawn("gmrun")                 end),
+  awful.key({ modkey }, "p", function () spawn("gmrun") end),
 
   -- pixel-grabbing
   awful.key({ modkey }, "F11", function () spawn("grabc 2>&1 | xclip -i") end),
 
   -- screengrabbing
-  awful.key({ modkey }, "F12", function () spawn("scrot -e 'mv $f /home/andrew/images/shots/'") end),
-
-  awful.key({ modkey }, "x", function ()
-    awful.prompt.run({ prompt = "Run Lua code: " },
-    prompt_box[mouse.screen].widget,
-    awful.util.eval, nil,
-    awful.util.getdir("cache") .. "/history_eval")
-  end)
+  awful.key({ modkey }, "F12", function () spawn("scrot -e 'mv $f /home/andrew/images/shots/'") end)
 )
 
 client_keys = awful.util.table.join(
@@ -399,7 +392,7 @@ awful.rules.rules = {
 }
 
 -- Signal function to execute when a new client appears.
-client.add_signal("manage", function (c, startup)
+client.connect_signal("manage", function (c, startup)
   if not startup then
     -- Set the windows at the slave,
     -- i.e. put it at the end of others instead of setting it master.
@@ -413,5 +406,5 @@ client.add_signal("manage", function (c, startup)
   end
 end)
 
-client.add_signal("focus",   function(c) c.border_color = beautiful.border_focus end)
-client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+client.connect_signal("focus",   function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
