@@ -1,9 +1,7 @@
-require("awful")
+local awful = require("awful")
 
 local pairs = pairs
 local table = table
-
-local awful  = awful
 local client = client
 
 module("lib.summon")

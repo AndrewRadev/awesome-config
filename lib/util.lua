@@ -1,6 +1,4 @@
-require("awful")
-
-local awful = awful
+local awful = require("awful")
 
 module("lib.util")
 
