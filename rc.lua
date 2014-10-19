@@ -145,9 +145,7 @@ for s = 1, screen.count() do
   taglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist.buttons)
 
   -- Create a tasklist widget
-  tasklist[s] = awful.widget.tasklist(function(c)
-    return awful.widget.tasklist.label.currenttags(c, s)
-  end, tasklist.buttons)
+  tasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist.buttons)
 
   -- Create the widget box
   widget_box[s] = awful.wibox({ position = "top", screen = s })
@@ -156,7 +154,6 @@ for s = 1, screen.count() do
   local left_layout = wibox.layout.fixed.horizontal()
   left_layout:add(taglist[s])
   left_layout:add(obvious.volume_alsa(0, "Master"))
-  --left_layout:add(tasklist[s]),
 
   -- Widgets that are aligned to the right
   local right_layout = wibox.layout.fixed.horizontal()
@@ -323,32 +320,41 @@ end
 for i = 1, keynumber do
   global_keys = awful.util.table.join(
     global_keys,
+
+    -- View tag only.
     awful.key({ modkey }, "#" .. i + 9, function ()
       local screen = mouse.screen
-      if tags[screen][i] then
-        awful.tag.viewonly(tags[screen][i])
+      local tag = awful.tag.gettags(screen)[i]
+      if tag then
+        awful.tag.viewonly(tag)
       end
     end),
-
+    -- Toggle tag.
     awful.key({ modkey, "Control" }, "#" .. i + 9, function ()
       local screen = mouse.screen
-      if tags[screen][i] then
-        awful.tag.viewtoggle(tags[screen][i])
+      local tag = awful.tag.gettags(screen)[i]
+      if tag then
+        awful.tag.viewtoggle(tag)
       end
     end),
-
+    -- Move client to tag.
     awful.key({ modkey, "Shift" }, "#" .. i + 9, function ()
-      if client.focus and tags[client.focus.screen][i] then
-        awful.client.movetotag(tags[client.focus.screen][i])
+      if client.focus then
+        local tag = awful.tag.gettags(client.focus.screen)[i]
+        if tag then
+          awful.client.movetotag(tag)
+        end
       end
     end),
-
+    -- Toggle tag.
     awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9, function ()
-      if client.focus and tags[client.focus.screen][i] then
-        awful.client.toggletag(tags[client.focus.screen][i])
+      if client.focus then
+        local tag = awful.tag.gettags(client.focus.screen)[i]
+        if tag then
+          awful.client.toggletag(tag)
+        end
       end
-    end)
-  )
+    end))
 end
 
 client_buttons = awful.util.table.join(
