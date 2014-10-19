@@ -157,7 +157,10 @@ for s = 1, screen.count() do
 
   -- Widgets that are aligned to the right
   local right_layout = wibox.layout.fixed.horizontal()
-  if s == 1 then right_layout:add(systray) end
+  if s == 1 then
+    right_layout:add(separator)
+    right_layout:add(systray)
+  end
   right_layout:add(separator)
   right_layout:add(keyboard_layout)
   right_layout:add(separator)
