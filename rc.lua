@@ -73,9 +73,6 @@ end)
 
 -- Keyboard layout widget
 keyboard_layout = wibox.widget.textbox(" EN ")
-keyboard_layout.name = "keyboard_layout"
-keyboard_layout.border_width = 1
-keyboard_layout.border_color = beautiful.fg_normal
 
 dbus.request_name("session", "ru.gentoo.kbdd")
 dbus.add_match("session", "interface='ru.gentoo.kbdd',member='layoutChanged'")
@@ -83,7 +80,7 @@ dbus.connect_signal("ru.gentoo.kbdd", function(...)
   local data = {...}
   local layout = data[2]
   lts = { [0] = " EN ", [1] = " BG " }
-  keyboard_layout.set_text(lts[layout])
+  keyboard_layout:set_text(lts[layout])
 end)
 
 -- Separator
