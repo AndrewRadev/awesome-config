@@ -209,9 +209,10 @@ function map_global(key_description, action)
   root.keys(global_keys)
 end
 
-map_global("M-Left",   awful.tag.viewprev)
-map_global("M-Right",  awful.tag.viewnext)
-map_global("M-Escape", awful.tag.history.restore)
+-- Disabled for now, not really used:
+--map_global("M-Left",   awful.tag.viewprev)
+--map_global("M-Right",  awful.tag.viewnext)
+--map_global("M-Escape", awful.tag.history.restore)
 
 map_global("M-j", function ()
   awful.client.focus.byidx(1)
@@ -285,9 +286,8 @@ global_keys = awful.util.table.join(
   awful.key({ modkey }, "Down", function () obvious.volume_alsa.lower(0, "Master", 5) end),
   awful.key({ modkey }, "Up",   function () obvious.volume_alsa.raise(0, "Master", 5) end),
 
-  -- TODO: Fix brightness controls (use dbus?)
-  awful.key({ modkey }, "F5", function () spawn("/home/andrew/bin/brightness down") end ),
-  awful.key({ modkey }, "F6", function () spawn("/home/andrew/bin/brightness up")   end ),
+  awful.key({ modkey }, "Left",  function () spawn("/home/andrew/bin/brightness down 10") end ),
+  awful.key({ modkey }, "Right", function () spawn("/home/andrew/bin/brightness up 10")   end ),
 
   -- prompt
   awful.key({ modkey }, "p", function () spawn("gmrun") end),
