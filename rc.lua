@@ -286,8 +286,8 @@ global_keys = awful.util.table.join(
   awful.key({ modkey }, "Down", function () obvious.volume_alsa.lower(0, "Master", 5) end),
   awful.key({ modkey }, "Up",   function () obvious.volume_alsa.raise(0, "Master", 5) end),
 
-  awful.key({ modkey }, "Left",  function () spawn("/home/andrew/bin/brightness down 10") end ),
-  awful.key({ modkey }, "Right", function () spawn("/home/andrew/bin/brightness up 10")   end ),
+  awful.key({ modkey }, "Left",  function () spawn("xbacklight -dec 5") end ),
+  awful.key({ modkey }, "Right", function () spawn("xbacklight -inc 5") end ),
 
   -- prompt
   awful.key({ modkey }, "p", function () spawn("gmrun") end),
