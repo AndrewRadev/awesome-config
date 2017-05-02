@@ -17,7 +17,7 @@ require("obvious.volume_alsa")
 require("obvious.battery")
 require("obvious.temp_info")
 
-require("vicious")
+local vicious = require("vicious")
 
 require("lib.util")
 require("lib.summon")
@@ -51,7 +51,7 @@ for s = 1, screen.count() do
 end
 
 -- Textclock widget
-text_clock = awful.widget.textclock()
+text_clock = wibox.widget.textclock()
 
 -- MPD widget
 mpd = wibox.widget.textbox()
@@ -148,7 +148,7 @@ for s = 1, screen.count() do
   tasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist.buttons)
 
   -- Create the widget box
-  widget_box[s] = awful.wibox({ position = "top", screen = s })
+  widget_box[s] = awful.wibar({ position = "top", screen = s })
 
   -- Widgets that are aligned to the left
   local left_layout = wibox.layout.fixed.horizontal()
@@ -286,8 +286,8 @@ global_keys = awful.util.table.join(
   awful.key({ modkey }, "Down", function () obvious.volume_alsa.lower(0, "Master", 5) end),
   awful.key({ modkey }, "Up",   function () obvious.volume_alsa.raise(0, "Master", 5) end),
 
-  awful.key({ modkey }, "Left",  function () spawn("xbacklight -dec 5") end ),
-  awful.key({ modkey }, "Right", function () spawn("xbacklight -inc 5") end ),
+  awful.key({ modkey }, "Left",  function () spawn("xbacklight -dec 2") end ),
+  awful.key({ modkey }, "Right", function () spawn("xbacklight -inc 2") end ),
 
   -- prompt
   awful.key({ modkey }, "p", function () spawn("gmrun") end),
@@ -327,7 +327,7 @@ for i = 1, keynumber do
     -- View tag only.
     awful.key({ modkey }, "#" .. i + 9, function ()
       local screen = mouse.screen
-      local tag = awful.tag.gettags(screen)[i]
+      local tag = screen.tags[i]
       if tag then
         awful.tag.viewonly(tag)
       end
@@ -335,7 +335,7 @@ for i = 1, keynumber do
     -- Toggle tag.
     awful.key({ modkey, "Control" }, "#" .. i + 9, function ()
       local screen = mouse.screen
-      local tag = awful.tag.gettags(screen)[i]
+      local tag = screen.tags[i]
       if tag then
         awful.tag.viewtoggle(tag)
       end
@@ -343,7 +343,7 @@ for i = 1, keynumber do
     -- Move client to tag.
     awful.key({ modkey, "Shift" }, "#" .. i + 9, function ()
       if client.focus then
-        local tag = awful.tag.gettags(client.focus.screen)[i]
+        local tag = client.focus.screen.tags[i]
         if tag then
           awful.client.movetotag(tag)
         end
@@ -352,7 +352,7 @@ for i = 1, keynumber do
     -- Toggle tag.
     awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9, function ()
       if client.focus then
-        local tag = awful.tag.gettags(client.focus.screen)[i]
+        local tag = client.focus.screen.tags[i]
         if tag then
           awful.client.toggletag(tag)
         end
