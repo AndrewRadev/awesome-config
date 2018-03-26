@@ -295,6 +295,9 @@ global_keys = awful.util.table.join(
   -- pixel-grabbing
   awful.key({ modkey }, "F11", function () spawn("xcolor | xclip -i") end),
 
+  -- copy X selection to clipboard
+  awful.key({ modkey, "Shift" }, "=", function () spawn("bin/copy-clipboard") end),
+
   -- screengrabbing
   awful.key({ modkey }, "F12", function () spawn("scrot -e 'mv $f /home/andrew/images/shots/'") end)
 )
