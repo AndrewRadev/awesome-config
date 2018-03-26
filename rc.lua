@@ -290,7 +290,7 @@ global_keys = awful.util.table.join(
   awful.key({ modkey }, "Right", function () spawn("xbacklight -inc 2") end ),
 
   -- prompt
-  awful.key({ modkey }, "p", function () spawn("gmrun") end),
+  awful.key({ modkey }, "p", function () spawn("bash -c 'PATH=$PATH:/home/andrew/bin gmrun'") end),
 
   -- pixel-grabbing
   awful.key({ modkey }, "F11", function () spawn("grabc 2>&1 | xclip -i") end),
