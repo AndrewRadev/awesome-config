@@ -293,7 +293,7 @@ global_keys = awful.util.table.join(
   awful.key({ modkey }, "p", function () spawn("bash -c 'PATH=$PATH:/home/andrew/bin gmrun'") end),
 
   -- pixel-grabbing
-  awful.key({ modkey }, "F11", function () spawn("xcolor | xclip -i") end),
+  awful.key({ modkey }, "F11", function () spawn("bash -c 'PATH=$PATH:/home/andrew/.cargo/bin xcolor | tr -d \"\n\" | xclip -i'") end),
 
   -- copy X selection to clipboard
   awful.key({ modkey, "Shift" }, "=", function () spawn("bin/copy-clipboard") end),
