@@ -27,7 +27,7 @@ local spawn  = awful.util.spawn
 local summon = lib.summon.summon
 local util   = lib.util
 
-local terminal    = "alacritty"
+local terminal    = "urxvt"
 local modkey      = "Mod1"
 local home        = os.getenv("HOME")
 local editor      = os.getenv("EDITOR") or "vim"
