@@ -13,9 +13,9 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 
-require("obvious.volume_alsa")
-require("obvious.battery")
-require("obvious.temp_info")
+local volume_alsa = require("obvious.volume_alsa")
+local battery     = require("obvious.battery")
+local temp_info   = require("obvious.temp_info")
 
 local vicious = require("vicious")
 
@@ -153,7 +153,7 @@ for s = 1, screen.count() do
   -- Widgets that are aligned to the left
   local left_layout = wibox.layout.fixed.horizontal()
   left_layout:add(taglist[s])
-  left_layout:add(obvious.volume_alsa(0, "Master"))
+  left_layout:add(volume_alsa(0, "Master"))
 
   -- Widgets that are aligned to the right
   local right_layout = wibox.layout.fixed.horizontal()
@@ -164,9 +164,9 @@ for s = 1, screen.count() do
   right_layout:add(separator)
   right_layout:add(keyboard_layout)
   right_layout:add(separator)
-  right_layout:add(obvious.battery())
+  right_layout:add(battery())
   right_layout:add(separator)
-  right_layout:add(obvious.temp_info())
+  right_layout:add(temp_info())
   right_layout:add(separator)
   right_layout:add(text_clock)
   right_layout:add(layout_box[s])
@@ -282,9 +282,9 @@ global_keys = awful.util.table.join(
   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
   -- sound & brightness
-  awful.key({ modkey }, "F2",   function () obvious.volume_alsa.mute(0, "Master")     end),
-  awful.key({ modkey }, "Down", function () obvious.volume_alsa.lower(0, "Master", 5) end),
-  awful.key({ modkey }, "Up",   function () obvious.volume_alsa.raise(0, "Master", 5) end),
+  awful.key({ modkey }, "F2",   function () volume_alsa.mute(0, "Master")     end),
+  awful.key({ modkey }, "Down", function () volume_alsa.lower(0, "Master", 5) end),
+  awful.key({ modkey }, "Up",   function () volume_alsa.raise(0, "Master", 5) end),
 
   awful.key({ modkey }, "Left",  function () spawn("xbacklight -dec 2") end ),
   awful.key({ modkey }, "Right", function () spawn("xbacklight -inc 2") end ),
