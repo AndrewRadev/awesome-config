@@ -4,3 +4,6 @@
 [submodule "vicious"]
 	path = vicious
 	url = http://git.sysphere.org/vicious
+[submodule "fainty"]
+	path = fainty
+	url = https://github.com/vladimir-g/fainty

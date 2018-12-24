@@ -13,11 +13,11 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 
-local volume_alsa = require("obvious.volume_alsa")
-local battery     = require("obvious.battery")
-local temp_info   = require("obvious.temp_info")
+local battery   = require("obvious.battery")
+local temp_info = require("obvious.temp_info")
 
 local vicious = require("vicious")
+local fainty  = require("fainty")
 
 require("lib.util")
 require("lib.summon")
@@ -52,6 +52,19 @@ end
 
 -- Textclock widget
 text_clock = wibox.widget.textclock()
+-- Audio widget
+pulsewidget = fainty.widgets.pulseaudio({
+  channel_list = {
+    {
+      icon = "♪", channel_type = 'sink', label = "Speakers",
+      name = "alsa_output.pci-0000_00_1f.3.analog-stereo"
+    },
+    {
+      icon = "☊", channel_type = 'sink', label = "Bluetooth",
+      name = "bluez_sink.25_59_BA_1C_4A_B2.a2dp_sink"
+    },
+  }
+})
 
 -- MPD widget
 mpd = wibox.widget.textbox()
@@ -153,7 +166,7 @@ for s = 1, screen.count() do
   -- Widgets that are aligned to the left
   local left_layout = wibox.layout.fixed.horizontal()
   left_layout:add(taglist[s])
-  left_layout:add(volume_alsa(0, "Master"))
+  left_layout:add(pulsewidget)
 
   -- Widgets that are aligned to the right
   local right_layout = wibox.layout.fixed.horizontal()
@@ -282,9 +295,9 @@ global_keys = awful.util.table.join(
   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
   -- sound & brightness
-  awful.key({ modkey }, "F2",   function () volume_alsa.mute(0, "Master")     end),
-  awful.key({ modkey }, "Down", function () volume_alsa.lower(0, "Master", 5) end),
-  awful.key({ modkey }, "Up",   function () volume_alsa.raise(0, "Master", 5) end),
+  awful.key({ modkey }, "F2",   function () pulsewidget:toggle() end),
+  awful.key({ modkey }, "Down", function () pulsewidget:lower(5) end),
+  awful.key({ modkey }, "Up",   function () pulsewidget:raise(5) end),
 
   awful.key({ modkey }, "Left",  function () spawn("xbacklight -dec 2") end ),
   awful.key({ modkey }, "Right", function () spawn("xbacklight -inc 2") end ),
