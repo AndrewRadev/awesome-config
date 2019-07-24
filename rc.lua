@@ -15,15 +15,13 @@ local menubar = require("menubar")
 
 local battery   = require("obvious.battery")
 local temp_info = require("obvious.temp_info")
-
-local vicious = require("vicious")
-local fainty  = require("fainty")
+local fainty    = require("fainty")
 
 require("lib.util")
 require("lib.summon")
 require("lib.core_ext")
 
-local spawn  = awful.util.spawn
+local spawn  = awful.spawn
 local summon = lib.summon.summon
 local util   = lib.util
 
@@ -65,24 +63,6 @@ pulsewidget = fainty.widgets.pulseaudio({
     },
   }
 })
-
--- MPD widget
-mpd = wibox.widget.textbox()
-vicious.register(mpd, vicious.widgets.mpd, function(w, args)
-  state = args['{state}']
-
-  if state == "Stop" then
-    return util.colorize('#009000', '--')
-  else
-    if state == "Pause" then
-      state_string = util.colorize('#009000', '||')
-    else
-      state_string = util.colorize('#009000', '>')
-    end
-
-    return "Playing: "..args['{Title}'].." "..state_string
-  end
-end)
 
 -- Keyboard layout widget
 keyboard_layout = wibox.widget.textbox(" EN ")
@@ -345,7 +325,7 @@ for i = 1, keynumber do
       local screen = mouse.screen
       local tag = screen.tags[i]
       if tag then
-        awful.tag.viewonly(tag)
+        tag:view_only()
       end
     end),
     -- Toggle tag.

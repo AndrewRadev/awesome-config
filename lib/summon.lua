@@ -41,7 +41,7 @@ function summon(cmd, properties)
     return
   end
 
-  awful.util.spawn(cmd)
+  awful.spawn(cmd)
 end
 
 -- Returns true if all pairs in table1 are present in table2
