@@ -58,8 +58,12 @@ pulsewidget = fainty.widgets.pulseaudio({
       name = "alsa_output.pci-0000_00_1f.3.analog-stereo"
     },
     {
-      icon = "☊", channel_type = 'sink', label = "Bluetooth",
+      icon = "☊", channel_type = 'sink', label = "Canyon BT Speaker",
       name = "bluez_sink.25_59_BA_1C_4A_B2.a2dp_sink"
+    },
+    {
+      icon = "☊", channel_type = 'sink', label = "TaoTronics Headset",
+      name = "bluez_sink.00_00_00_00_1D_32.a2dp_sink"
     },
   }
 })
