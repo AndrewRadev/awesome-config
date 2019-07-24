@@ -274,7 +274,7 @@ map_global("M-S-s", screenkey_callback)
 
 -- Applications
 map_global("M-Return", util.spawner(terminal))
-map_global("M-S-f", function () summon("firefox", { class = "Firefox" }) end)
+map_global("M-S-f", function () summon("firefox", { class = "firefox" }) end)
 map_global("M-S-w", util.spawner("bin/websearch-prompt 'http://en.wikipedia.org/wiki/{0}'"))
 map_global("M-S-y", util.spawner("bin/websearch-prompt 'http://youtube.com/results?search_query={0}'"))
 map_global("M-S-t", util.spawner("thunar"))
