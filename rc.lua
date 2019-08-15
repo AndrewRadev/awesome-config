@@ -122,10 +122,6 @@ end)
 
 
 -- Create a wibox for each screen and add it
-widget_box = {}
-layout_box = {}
-taglist    = {}
-
 local taglist_buttons = gears.table.join(
   awful.button({ }, 1, function(t) t:view_only() end),
   awful.button({ modkey }, 1, function(t)
@@ -371,7 +367,12 @@ global_keys = awful.util.table.join(
 )
 
 client_keys = awful.util.table.join(
-  awful.key({ modkey, },           "f",      function (c) c.fullscreen = not c.fullscreen  end),
+  awful.key({ modkey, }, "f", function (c)
+    c.fullscreen = not c.fullscreen
+    c:raise()
+  end,
+  {description = "toggle fullscreen", group = "client"}),
+  -- TODO consider adding descriptions everywhere, and that help window
   awful.key({ modkey, },           "q",      function (c) c:kill()                         end),
   awful.key({ modkey, },           "t",      awful.client.floating.toggle                     ),
   awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
@@ -460,7 +461,7 @@ awful.rules.rules = {
       border_color = beautiful.border_normal,
       focus        = awful.client.focus.filter,
       raise        = true,
-      keys         = clientkeys,
+      keys         = client_keys,
       buttons      = clientbuttons,
       screen       = awful.screen.preferred,
       placement    = awful.placement.no_overlap+awful.placement.no_offscreen
