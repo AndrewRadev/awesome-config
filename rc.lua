@@ -210,7 +210,7 @@ awful.screen.connect_for_each_screen(function(s)
   s.wibox = awful.wibar({ position = "top", screen = s })
 
   -- Create a generic separator
-  s.separator = wibox.widget.textbox('<span color="#ee1111"> :: </span>')
+  s.separator = wibox.widget.textbox(util.colorize("#ee1111", " :: "))
 
   -- Add widgets to the wibox
   s.wibox:setup {
