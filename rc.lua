@@ -84,8 +84,6 @@ awful.layout.layouts = {
 -- }}}
 
 
--- Textclock widget
-text_clock = wibox.widget.textclock()
 -- Audio widget
 pulsewidget = fainty.widgets.pulseaudio({
   settings = {
@@ -186,8 +184,8 @@ awful.screen.connect_for_each_screen(function(s)
 
   -- Create an imagebox widget which will contain an icon indicating which layout we're using.
   -- We need one layoutbox per screen.
-  s.mylayoutbox = awful.widget.layoutbox(s)
-  s.mylayoutbox:buttons(gears.table.join(
+  s.layout_box = awful.widget.layoutbox(s)
+  s.layout_box:buttons(gears.table.join(
     awful.button({ }, 1, function () awful.layout.inc( 1) end),
     awful.button({ }, 3, function () awful.layout.inc(-1) end),
     awful.button({ }, 4, function () awful.layout.inc( 1) end),
@@ -195,37 +193,36 @@ awful.screen.connect_for_each_screen(function(s)
   ))
 
   -- Create a taglist widget
-  s.mytaglist = awful.widget.taglist {
+  s.taglist = awful.widget.taglist {
     screen  = s,
     filter  = awful.widget.taglist.filter.all,
     buttons = taglist_buttons
   }
 
   -- Create a tasklist widget
-  s.mytasklist = awful.widget.tasklist {
+  s.tasklist = awful.widget.tasklist {
     screen  = s,
     filter  = awful.widget.tasklist.filter.currenttags,
     buttons = tasklist_buttons
   }
 
   -- Create the wibox
-  s.mywibox = awful.wibar({ position = "top", screen = s })
+  s.wibox = awful.wibar({ position = "top", screen = s })
 
   -- Create a generic separator
   s.separator = wibox.widget.textbox('<span color="#ee1111"> :: </span>')
 
   -- Add widgets to the wibox
-  s.mywibox:setup {
+  s.wibox:setup {
     layout = wibox.layout.align.horizontal,
     {
       -- Left widgets
       layout = wibox.layout.fixed.horizontal,
-      s.mytaglist,
-      s.mypromptbox,
+      s.taglist,
       pulsewidget,
     },
     -- Middle widget
-    s.mytasklist,
+    s.tasklist,
     {
       -- Right widgets
       layout = wibox.layout.fixed.horizontal,
@@ -238,8 +235,8 @@ awful.screen.connect_for_each_screen(function(s)
       s.separator,
       temp_info(),
       s.separator,
-      text_clock,
-      s.mylayoutbox,
+      wibox.widget.textclock(),
+      s.layout_box,
     },
   }
 end)
@@ -270,7 +267,7 @@ function map_global(key_description, action)
 
   key_definition = awful.key(modifiers, key, action)
   global_keys    = awful.util.table.join(global_keys, key_definition)
-  root.keys(global_keys)
+  -- root.keys(global_keys)
 end
 
 -- Disabled for now, not really used:
@@ -435,7 +432,7 @@ for i = 1, 9 do
 )
 end
 
-clientbuttons = gears.table.join(
+client_buttons = gears.table.join(
   awful.button({ }, 1, function (c)
     c:emit_signal("request::activate", "mouse_click", {raise = true})
   end),
@@ -462,7 +459,7 @@ awful.rules.rules = {
       focus        = awful.client.focus.filter,
       raise        = true,
       keys         = client_keys,
-      buttons      = clientbuttons,
+      buttons      = client_buttons,
       screen       = awful.screen.preferred,
       placement    = awful.placement.no_overlap+awful.placement.no_offscreen
     }
@@ -472,8 +469,6 @@ awful.rules.rules = {
   {
     rule_any = {
       instance = {
-        "DTA",  -- Firefox addon DownThemAll.
-        "copyq",  -- Includes session name in class.
         "pinentry",
       },
       class = {
