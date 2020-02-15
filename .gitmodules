@@ -1,9 +1,9 @@
 [submodule "obvious"]
-	path = obvious
-	url = git@github.com:hoelzro/obvious.git
+  path = obvious
+  url = https://github.com/hoelzro/obvious
 [submodule "vicious"]
-	path = vicious
-	url = http://git.sysphere.org/vicious
+  path = vicious
+  url = https://github.com/vicious-widgets/vicious
 [submodule "fainty"]
-	path = fainty
-	url = https://github.com/vladimir-g/fainty
+  path = fainty
+  url = https://github.com/vladimir-g/fainty
