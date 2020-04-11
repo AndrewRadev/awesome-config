@@ -325,7 +325,7 @@ map_global("M-Return", util.spawner(terminal))
 map_global("M-S-f", function () summon("firefox", { class = "firefox" }) end)
 map_global("M-S-w", util.spawner("bin/websearch-prompt 'http://en.wikipedia.org/wiki/{0}'"))
 map_global("M-S-y", util.spawner("bin/websearch-prompt 'http://youtube.com/results?search_query={0}'"))
-map_global("M-S-t", util.spawner("thunar"))
+map_global("M-S-t", util.spawner("bash -c 'PATH=$PATH:/home/andrew/bin thunar'"))
 map_global("M-S-m", util.spawner("firefox gmail.com"))
 
 global_keys = awful.util.table.join(
