@@ -382,7 +382,8 @@ global_keys = awful.util.table.join(
   awful.key({ modkey }, "F12", function () spawn("bash -c 'PATH=$PATH:/home/andrew/.cargo/bin xcolor | tr -d \"\n\" | xclip -i'") end),
 
   -- copy X selection to clipboard
-  awful.key({ modkey, "Shift" }, "=", function () spawn("bin/copy-clipboard") end),
+  awful.key({ modkey, "Shift" }, "=", function () spawn("bin/copy-to-clipboard") end),
+  awful.key({ modkey, "Shift" }, "-", function () spawn("bin/copy-from-clipboard") end),
 
   -- screengrabbing
   awful.key({ modkey }, "Print", function () spawn("scrot -e 'mv $f /home/andrew/images/shots/'") end)
