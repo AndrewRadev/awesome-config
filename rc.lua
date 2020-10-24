@@ -336,8 +336,7 @@ screenkey_callback = function ()
     spawn("killall screenkey")
   end
 end
-map_global("M-s",   screenkey_callback)
-map_global("M-S-s", screenkey_callback)
+map_global("M-F11", screenkey_callback)
 
 -- Applications
 map_global("M-Return", util.spawner(terminal))
@@ -362,25 +361,25 @@ global_keys = awful.util.table.join(
   awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1) end),
 
   -- sound & brightness
-  awful.key({ modkey }, "F2",   function () pulsewidget:toggle() end),
-  awful.key({ modkey }, "Down", function () pulsewidget:lower(5) end),
-  awful.key({ modkey }, "Up",   function () pulsewidget:raise(5) end),
+  awful.key({ modkey }, "F1", function () pulsewidget_out:toggle() end),
+  awful.key({ modkey }, "F2", function () pulsewidget_out:lower(5) end),
+  awful.key({ modkey }, "F3", function () pulsewidget_out:raise(5) end),
   awful.key({ modkey }, "F4", function () pulsewidget_in:toggle() end),
 
-  awful.key({ modkey }, "Left",  function () spawn("xbacklight -dec 2") end ),
-  awful.key({ modkey }, "Right", function () spawn("xbacklight -inc 2") end ),
+  awful.key({ modkey }, "F5", function () spawn("xbacklight -dec 2") end ),
+  awful.key({ modkey }, "F6", function () spawn("xbacklight -inc 2") end ),
 
   -- prompt
   awful.key({ modkey }, "p", function () spawn("bash -c 'PATH=$PATH:/home/andrew/bin gmrun'") end),
 
   -- pixel-grabbing
-  awful.key({ modkey }, "F11", function () spawn("bash -c 'PATH=$PATH:/home/andrew/.cargo/bin xcolor | tr -d \"\n\" | xclip -i'") end),
+  awful.key({ modkey }, "F12", function () spawn("bash -c 'PATH=$PATH:/home/andrew/.cargo/bin xcolor | tr -d \"\n\" | xclip -i'") end),
 
   -- copy X selection to clipboard
   awful.key({ modkey, "Shift" }, "=", function () spawn("bin/copy-clipboard") end),
 
   -- screengrabbing
-  awful.key({ modkey }, "F12", function () spawn("scrot -e 'mv $f /home/andrew/images/shots/'") end)
+  awful.key({ modkey }, "Print", function () spawn("scrot -e 'mv $f /home/andrew/images/shots/'") end)
 )
 
 client_keys = awful.util.table.join(
