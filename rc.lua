@@ -84,8 +84,8 @@ awful.layout.layouts = {
 -- }}}
 
 
--- Audio widget
-pulsewidget = fainty.widgets.pulseaudio({
+-- Audio widgets
+pulsewidget_out = fainty.widgets.pulseaudio({
   settings = {
     notify_errors = false
   },
@@ -104,6 +104,24 @@ pulsewidget = fainty.widgets.pulseaudio({
       name = "bluez_sink.00_00_00_00_1D_32.a2dp_sink"
     },
   }
+})
+
+pulsewidget_in = fainty.widgets.pulseaudio({
+  settings = {
+    notify_errors = false,
+    format = " %s ",
+  },
+
+  channel_list = {
+    {
+      icon = "m", channel_type = 'source', label = "Built-in Microphone",
+      name = "alsa_input.pci-0000_00_1f.3.analog-stereo"
+    },
+    {
+      icon = "M", channel_type = 'source', label = "USB Microphone",
+      name = "alsa_input.usb-0d8c_C-Media_USB_Headphone_Set-00.mono-fallback"
+    },
+  },
 })
 
 -- Keyboard layout widget
@@ -219,7 +237,8 @@ awful.screen.connect_for_each_screen(function(s)
       -- Left widgets
       layout = wibox.layout.fixed.horizontal,
       s.taglist,
-      pulsewidget,
+      pulsewidget_out,
+      pulsewidget_in,
     },
     -- Middle widget
     s.tasklist,
@@ -346,6 +365,7 @@ global_keys = awful.util.table.join(
   awful.key({ modkey }, "F2",   function () pulsewidget:toggle() end),
   awful.key({ modkey }, "Down", function () pulsewidget:lower(5) end),
   awful.key({ modkey }, "Up",   function () pulsewidget:raise(5) end),
+  awful.key({ modkey }, "F4", function () pulsewidget_in:toggle() end),
 
   awful.key({ modkey }, "Left",  function () spawn("xbacklight -dec 2") end ),
   awful.key({ modkey }, "Right", function () spawn("xbacklight -inc 2") end ),
