@@ -372,6 +372,12 @@ global_keys = awful.util.table.join(
   -- prompt
   awful.key({ modkey }, "p", function () spawn("bash -c 'PATH=$PATH:/home/andrew/bin gmrun'") end),
 
+  -- keyboard backlight
+  awful.key({ modkey }, "F9", function () spawn("bash -c 'PATH=$PATH:/home/andrew/bin keyboard-light-toggle'") end),
+
+  -- keyboard backlight
+  awful.key({ modkey }, "F10", function () spawn("bash -c 'PATH=$PATH:/home/andrew/bin sound-toggle'") end),
+
   -- pixel-grabbing
   awful.key({ modkey }, "F12", function () spawn("bash -c 'PATH=$PATH:/home/andrew/.cargo/bin xcolor | tr -d \"\n\" | xclip -i'") end),
 
