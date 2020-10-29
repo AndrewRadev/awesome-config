@@ -12,7 +12,7 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
-local menubar = require("menubar")
+-- local menubar = require("menubar")
 
 local battery   = require("obvious.battery")
 local temp_info = require("obvious.temp_info")

@@ -57,6 +57,9 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- notification_[bg|fg]
 -- notification_[width|height|margin]
 -- notification_[border_color|border_width|shape|opacity]
+theme.notification_icon_size = 64
+theme.notification_max_width = 600
+theme.notification_font = "Roboto 8"
 
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
