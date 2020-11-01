@@ -303,7 +303,6 @@ function translate_modifiers(modifiers)
   return result
 end
 
--- TODO: unmap_global
 function map_global(key_description, action)
   local key_definition = key_description:split('-')
   local key            = table.remove(key_definition)
@@ -311,7 +310,6 @@ function map_global(key_description, action)
 
   key_definition = awful.key(modifiers, key, action)
   global_keys    = awful.util.table.join(global_keys, key_definition)
-  -- root.keys(global_keys)
 end
 
 -- Disabled for now, not really used:
