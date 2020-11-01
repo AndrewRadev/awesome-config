@@ -87,7 +87,11 @@ awful.layout.layouts = {
 -- Audio widgets
 pulsewidget_out = fainty.widgets.pulseaudio({
   settings = {
-    notify_errors = false
+    notify_errors = false,
+    menu_theme = {
+      width = beautiful.menu_width,
+      height = beautiful.menu_height,
+    }
   },
 
   channel_list = {
@@ -110,6 +114,10 @@ pulsewidget_in = fainty.widgets.pulseaudio({
   settings = {
     notify_errors = false,
     format = " %s ",
+    menu_theme = {
+      width = beautiful.menu_width,
+      height = beautiful.menu_height,
+    }
   },
 
   channel_list = {
