@@ -14,7 +14,6 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 -- local menubar = require("menubar")
 
-local battery   = require("obvious.battery")
 local temp_info = require("obvious.temp_info")
 local fainty    = require("fainty")
 
@@ -131,6 +130,9 @@ pulsewidget_in = fainty.widgets.pulseaudio({
     },
   },
 })
+
+-- Battery widget
+battery = fainty.widgets.battery({})
 
 -- Keyboard layout widget
 keyboard_layout = wibox.widget.textbox(" EN ")
@@ -258,7 +260,7 @@ awful.screen.connect_for_each_screen(function(s)
       s.separator,
       keyboard_layout,
       s.separator,
-      battery(),
+      battery,
       s.separator,
       temp_info(),
       s.separator,
