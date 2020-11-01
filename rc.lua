@@ -137,7 +137,17 @@ pulsewidget_in = fainty.widgets.pulseaudio({
 })
 
 -- Battery widget
-battery = fainty.widgets.battery({})
+battery = fainty.widgets.battery({
+  settings = {
+    fmt_discharging = ' <span color="#009000">↓</span>%(percent)3d% ' ..
+      '(%(hours)d:%(minutes)02d)', -- Green
+    fmt_charging = ' <span color="#009000">↑</span>%(percent)3d% ' ..
+      '(%(hours)d:%(minutes)02d)', -- Green
+    fmt_unknown = ' <span color="#bbbbbb">↯</span>%(percent)3d%', -- White
+    fmt_warning = ' <span color="#900000">↯!%(percent)3d%</span>', -- Red
+    fmt_not_present = ' <span color="#bbbbbb">↯</span> N/A', -- White
+  }
+})
 
 -- Keyboard layout widget
 keyboard_layout = wibox.widget.textbox(" EN ")
