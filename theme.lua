@@ -11,7 +11,7 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font          = "Roboto 8"
+theme.font          = "Ubuntu 8"
 
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#535d6c"
@@ -59,7 +59,6 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- notification_[border_color|border_width|shape|opacity]
 theme.notification_icon_size = 64
 theme.notification_max_width = 600
-theme.notification_font = "Roboto 8"
 
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
