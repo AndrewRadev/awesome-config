@@ -1,6 +1,9 @@
 local awful = require("awful")
+local beautiful = require("beautiful")
 
 return awful.widget.watch('acpi -t', 60, function(widget, stdout, _, _, exitcode)
+  widget.font = beautiful.font
+
   if exitcode > 0 then
     widget:set_text("[error: exitcode]")
     return
