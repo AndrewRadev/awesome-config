@@ -6,16 +6,19 @@ pcall(require, "luarocks.loader")
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
--- Widget and layout library
-local wibox = require("wibox")
--- Theme handling library
-local beautiful = require("beautiful")
--- Notification library
-local naughty = require("naughty")
 -- local menubar = require("menubar")
 
-local temp_info = require("obvious.temp_info")
-local fainty    = require("fainty")
+-- Widget and layout library
+local wibox = require("wibox")
+
+-- Theme handling library
+local beautiful = require("beautiful")
+
+-- Notification library
+local naughty = require("naughty")
+
+-- Widget library
+local fainty = require("fainty")
 
 require("lib.util")
 require("lib.summon")
@@ -24,6 +27,34 @@ require("lib.core_ext")
 local spawn  = awful.spawn
 local summon = lib.summon.summon
 local util   = lib.util
+
+local temp_info = awful.widget.watch('acpi -t', 60, function(widget, stdout, _, _, exitcode)
+  if exitcode > 0 then
+    widget:set_text("[error: exitcode]")
+    return
+  end
+
+  local temp = {}
+  for t in string.gmatch(stdout, 'Thermal %d+: %w+, (%d+.?%d*) degrees') do
+    temp[#temp + 1] = tonumber(t)
+  end
+
+  if #temp == 0 then
+    widget:set_text("[error: regex]")
+    return
+  end
+
+  local color = '#900000' -- hot
+
+  if temp[1] < 50 then
+    color = '#009000' -- normal
+  elseif temp[1] >= 50 and temp[1] < 60 then
+    color = '#909000' -- warm
+  end
+
+  degrees = '<span foreground="' .. color .. '">C</span>'
+  widget:set_markup(string.format('%.2f', temp[1]) .. ' ' .. degrees)
+end)
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -262,7 +293,7 @@ awful.screen.connect_for_each_screen(function(s)
       s.separator,
       battery,
       s.separator,
-      temp_info(),
+      temp_info,
       s.separator,
       wibox.widget.textclock(),
       s.layout_box,
